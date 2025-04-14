@@ -1,0 +1,21 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+*.log
+
+# Output files
+output/
+build/
+*.mp4
+*.png
+*.jpg
+*.json
+
+# System
+.DS_Store
+
+# COLMAP
+*.db
+sparse/
+
