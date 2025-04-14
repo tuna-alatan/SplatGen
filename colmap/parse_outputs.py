@@ -1,8 +1,12 @@
-import os
 from .parse_model import read_model
 
 def load_camera_data(sparse_model_dir):
-    cameras, images, points3D = read_model(sparse_model_dir, ext='.bin')
+    result = read_model(sparse_model_dir, ext='.bin')
+
+    if result is None:
+        raise RuntimeError(f"[✗] Failed to read COLMAP model from: {sparse_model_dir}")
+
+    cameras, images, points3D = result
 
     print(f"[✓] Loaded {len(images)} registered images")
     print(f"[✓] Loaded {len(cameras)} cameras")

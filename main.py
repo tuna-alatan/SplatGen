@@ -1,5 +1,6 @@
 from colmap.run_colmap import run_colmap_pipeline
 from colmap.parse_outputs import load_camera_data
+from cli.parser import get_args
 import os
 
 def main():
@@ -17,5 +18,5 @@ def main():
     sparse_model_dir = os.path.join(output_path, "sparse", "0")
     camera_data = load_camera_data(sparse_model_dir)
 
-    print(f"[→] First camera info:")
+    print("[→] First camera info:")
     print(camera_data[0])
