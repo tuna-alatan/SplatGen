@@ -1,21 +1,31 @@
-# Python
+# Bytecode & Python cache
 __pycache__/
 *.py[cod]
 *.egg-info/
-*.log
 
-# Output files
+# Output folders & logs
 output/
 build/
+*.log
 *.mp4
-*.png
-*.jpg
 *.json
 
-# System
+# Image outputs
+*.png
+*.jpg
+*.jpeg
+*.heic
+
+# Ignore only inside input/ (your raw images)
+input/
+input/*.jpg
+input/*.jpeg
+input/*.png
+input/*.heic
+
+# System files
 .DS_Store
 
-# COLMAP
+# COLMAP files
 *.db
 sparse/
-
