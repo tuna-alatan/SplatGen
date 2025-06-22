@@ -1,4 +1,5 @@
 from .parse_model import read_model
+import numpy as np
 import torch
 
 def load_points3d(sparse_model_dir):
@@ -19,4 +20,4 @@ def load_points3d(sparse_model_dir):
         positions.append(pt.xyz)
         colors.append([c / 255.0 for c in pt.rgb])  # Normalize to [0, 1]
 
-    return torch.FloatTensor(positions), torch.FloatTensor(colors)
+    return torch.from_numpy(np.array(positions)).float(), torch.from_numpy(np.array(colors)).float()

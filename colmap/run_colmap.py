@@ -27,5 +27,27 @@ def run_colmap_pipeline(images_path, output_dir):
         "--output_path", sparse_path,
     ], check=True)
 
+    # Dense Reconstruction
+    dense_path = os.path.join(output_dir, "dense")
+    os.makedirs(dense_path, exist_ok=True)
+
+    print("[→] Running COLMAP Stereo Matcher...")
+    subprocess.run([
+        "colmap", "stereo_matcher",
+        "--workspace_path", dense_path,
+        "--workspace_format", "COLMAP",
+        "--DenseStereo.geom_consistency", "true",
+    ], check=True)
+
+    print("[→] Running COLMAP Stereo Fusion...")
+    subprocess.run([
+        "colmap", "stereo_fusion",
+        "--workspace_path", dense_path,
+        "--workspace_format", "COLMAP",
+        "--input_type", "geometric",
+        "--output_path", os.path.join(dense_path, "fused.ply"),
+    ], check=True)
+
     print("[✓] COLMAP pipeline completed.")
-    print(f"[✓] Results saved to: {sparse_path}")
+    print(f"[✓] Sparse results saved to: {sparse_path}")
+    print(f"[✓] Dense results saved to: {dense_path}")
