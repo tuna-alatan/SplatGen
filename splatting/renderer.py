@@ -1,7 +1,7 @@
 import torch
 import torch.nn.functional as F
 
-def render_gaussians_2d(positions, colors, camera, point_radius=3, image_res=None):
+def render_gaussians_2d(positions, colors, camera, scales, opacities, point_radius=3, image_res=None):
     device = torch.device("mps")  # Use Metal backend for macOS
     positions = positions.to(device)
     colors = colors.to(device)
@@ -48,11 +48,12 @@ def render_gaussians_2d(positions, colors, camera, point_radius=3, image_res=Non
     xx = xx.unsqueeze(0).float()
 
     # Compute distances and render all Gaussians in parallel
-    for x, y, c in zip(xs, ys, cs):
+    for x, y, c, scale, opacity in zip(xs, ys, cs, scales, opacities):
         dx = xx - x
         dy = yy - y
         dist = torch.sqrt(dx**2 + dy**2)
-        alpha = torch.clamp(1 - (dist / point_radius), min=0)
+        adjusted_radius = point_radius * scale.mean()  # Adjust radius by scale
+        alpha = torch.clamp(1 - (dist / adjusted_radius), min=0) * opacity  # Modulate alpha by opacity
         alpha = alpha.unsqueeze(0)  # Add channel dimension
         img = img * (1 - alpha) + c.view(3, 1, 1) * alpha
 
